@@ -1,3 +1,5 @@
+import { getPlayAgainButton, getTimerElement } from './selectors.js';
+
 export const getRandomColorPairs = (count) => {
   // receive count --> return count * 2 random colors
   // using lib: https://github.com/davidmerfield/randomColor
@@ -32,4 +34,19 @@ function shuffle(arr) {
     arr[i] = arr[j];
     arr[j] = temp;
   }
+}
+
+export function showPlayAgainButton() {
+  const playAgainButton = getPlayAgainButton();
+  if (playAgainButton) playAgainButton.classList.add('show');
+}
+
+export function hidePlayAgainButton() {
+  const playAgainButton = getPlayAgainButton();
+  if (playAgainButton) playAgainButton.classList.remove('show');
+}
+
+export function setTimerText(text) {
+  const timerElement = getTimerElement();
+  if (timerElement) timerElement.textContent = text;
 }
