@@ -17,24 +17,24 @@ import {
 let selections = [];
 let gameStatus = GAME_STATUS.PLAYING;
 let timer = createTimer({
-  // seconds: GAME_TIME,
-  seconds: 60,
+  seconds: GAME_TIME,
   onChange: handleTimerChange,
   onFinish: handleTimerFinish,
 });
 
 function handleTimerChange(second) {
-  console.log('change', second);
+  // console.log('change', second);
   // show timer text
   const fullSecond = `0${second}`.slice(-2);
   setTimerText(fullSecond);
 }
 
 function handleTimerFinish() {
-  console.log('finished');
+  // console.log('finished');
   // end game
   gameStatus = GAME_STATUS.FINISHED;
   setTimerText('Game Over 🫠');
+  showPlayAgainButton();
 }
 
 // TODOs
@@ -85,13 +85,18 @@ function handleColorClick(liElement) {
   //  case not match
   //  remove "active" class for 2 <li> elements
   gameStatus = GAME_STATUS.BLOCKING;
+
   setTimeout(() => {
     selections[0].classList.remove('active');
     selections[1].classList.remove('active');
 
     //  reset selections for the next turn
     selections = [];
-    gameStatus = GAME_STATUS.PLAYING;
+
+    // race-condition check with handleTimerFinish
+    if (gameStatus !== GAME_STATUS.FINISHED) {
+      gameStatus = GAME_STATUS.PLAYING;
+    }
   }, 500);
 }
 
